@@ -1,0 +1,6 @@
+
+# misalkan file 404 terletak di 
+# http://localhost/harviacodeweb/error/404.php
+# maka kode kita menjadi seperti berikut
+ 
+ErrorDocument 404 /project/eror/eror.php

@@ -1,0 +1,6 @@
+//contoh method POST
+$umur = htmlspecialchars($_POST[‘age’]);
+//contoh method GET
+$nama = htmlspecialchars($_GET[‘name’]);
+//contoh langsung
+echo “Alamat : ” . htmlspecialchars($_POST[‘alamat’]);

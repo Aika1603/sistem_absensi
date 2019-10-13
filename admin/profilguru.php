@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+<?php
+session_start();
+if(isset($_SESSION["user_id"])) 
+{ if(($_SESSION["user_akses"]) == "admin") 
+{?>
+<html>
+<?php include "head.html";
+include("koneksi.php");
+include ("func.php");?>
+<body>
+<div id="wrapper">
+     <!-- Navigation -->
+        <?php include "nav.php";?>
+		<div class="outter-wp">
+		<div id="page-wrapper">
+		<div class="graphs">
+		<h3>Profil Guru</h3>
+		<div class="grid_3 grid_5">
+		
+			
+			<?php
+			if(isset($_GET['NIP'])){
+			$NIP =  mysqli_real_escape_string($koneksi,$_GET['NIP']);
+			
+			$sql = mysqli_query($koneksi, "SELECT * FROM guru WHERE NIP='$NIP'");
+			if(mysqli_num_rows($sql) == 0){
+				header("Location:datauser.php");
+			}else{
+				$row = mysqli_fetch_assoc($sql);
+			}
+			
+			if(isset($_GET['aksi']) == 'delete'){
+				$delete = mysqli_query($koneksi, "DELETE FROM guru WHERE NIP='$NIP'");
+				if($delete){
+					echo '<div class="alert alert-danger">Data berhasil dihapus.</div>';
+				}else{
+					echo '<div class="alert alert-info">Data gagal dihapus.</div>';
+				}
+			}
+			?>
+			<img class="img-responsive img-circle center-block" style=" width: 150px;height:150px;" src="images/<?php echo $row['avatar']; ?>" width="150"><br />
+			<table class="table table-striped">
+				<tr>
+					<th width="20%">NIP</th>
+					<td><?php echo $row['NIP']; ?></td>
+				</tr>
+				<tr>
+					<th>ID MENGAJAR</th>
+					<td><?php echo $row['id_mengajar']; ?></td>
+				</tr>
+				<tr>
+					<th>NAMA LENGKAP</th>
+					<td><?php echo $row['nama']; ?></td>
+				</tr>
+				
+				<tr>
+					<th>TEMPAT & TANGGAL LAHIR</th>
+					<td><?php echo $row['tempat_lahir'].', '.tanggal($row['tgl_lahir']); ?></td>
+				</tr>
+				<tr>
+					<th>WALI KELAS</th>
+					<td><?php echo $row['kelas']; ?></td>
+				</tr>
+				<tr>
+					<th>ALAMAT</th>
+					<td><?php echo $row['alamat']; ?></td>
+				</tr>
+				<tr>
+					<th>JENIS KELAMIN</th>
+					<td><?php echo $row['id_jk']; ?></td>
+				</tr>
+				<tr>
+					<th>EMAIL</th>
+					<td><?php echo $row['email']; ?>
+				</tr>
+				<tr>
+					<th>NO HP</th>
+					<td><?php echo $row['no_hp']; ?></td>
+				</tr>
+				<tr>
+					<th>STATUS</th>
+					<td><?php echo $row['status']; ?></td>
+				</tr>
+				<tr>
+					<th>JABATAN</th>
+					<td><?php echo $row['jabatan']; ?></td>
+				</tr>
+				
+			</table>
+			
+			<a href="dataguru.php" class="btn btn-warning"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></a>
+			<a href="editguru.php?NIP=<?php echo $row['NIP']; ?>" class="btn btn-primary"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit Data</a>
+			<a href="profilguru.php?aksi=delete&NIP=<?php echo $row['NIP']; ?>" class="btn btn-danger" onclick="return confirm('Yakin?')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Hapus Data</a>
+		
+				<?php } else {echo "<div class='alert alert-danger'>data belum terisi</div><br/><a href='datasiswa.php' class='btn btn-danger'>KEMBALI</a>";};?>
+		
+		</div>
+			</div>
+				</div>
+				</div>
+				</div>
+					<div class="clearfix"> </div>
+					<script src="js/bootstrap.min.js"></script>
+</body>
+</html>
+
+<?php
+$koneksi->close(); ;}else{{header ("location:logout.php");}};}else
+{header ("location:../index.php");}
+?>
